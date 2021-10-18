@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:libartory_management/Screen/bloodhub.dart';
 import 'package:libartory_management/Screen/booking.dart';
+import 'package:libartory_management/Screen/chat.dart';
 import 'package:libartory_management/Screen/drawer.dart';
 import 'package:libartory_management/Screen/lab_reports.dart';
 import 'package:libartory_management/Screen/profile.dart';
@@ -22,8 +25,36 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   @override
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance!.addObserver(this);
+    setStatus("Online");
+  }
+
+  void setStatus(String status) async {
+    await _firestore
+        .collection('LabortarySystem')
+        .doc(_auth.currentUser.uid)
+        .update({
+      "status": status,
+    });
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused) {
+      // online
+      setStatus("offline");
+    } else {
+      // offline
+      setStatus("Online");
+    }
+  }
+
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.transparent, //top bar color
@@ -339,7 +370,7 @@ class _HomePageState extends State<HomePage> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => Track()));
+                                      builder: (context) => chat()));
                             },
                             child: Padding(
                               padding: EdgeInsets.only(
@@ -366,7 +397,7 @@ class _HomePageState extends State<HomePage> {
                                         height: 10.0,
                                       ),
                                       Text(
-                                        'Track Order',
+                                        'ChatApp',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,

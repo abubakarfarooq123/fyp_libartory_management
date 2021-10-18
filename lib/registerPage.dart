@@ -55,26 +55,30 @@ class _RegisterPageState extends State<RegisterPage> {
     print('Values are ' + name + email + phone);
   }
 
-  registration() async {
+  Future<User?> registration() async {
     if (password == conformPassword) {
       try {
-        await FirebaseAuth.instance
-            .createUserWithEmailAndPassword(email: email, password: password)
-            .then((value) async {
-          await FirebaseFirestore.instance
-              .collection('LabortarySystem')
-              .doc(email)
-              .set({
-                'name': name,
-                'email': email,
-                'phone': phone,
-                'CNIC': CNIC,
-                'Adddress': address,
-                'Blood Group': setvalue
-              })
-              .then((value) => print('User Added'))
-              .catchError((error) => print('Falied to add user: $error'));
-        });
+        User user = (await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                email: email, password: password))
+            .user;
+        user.updateProfile(displayName: name);
+        await FirebaseFirestore.instance
+            .collection('LabortarySystem')
+            .doc(FirebaseAuth.instance.currentUser.uid)
+            .set({
+              'name': name,
+              'email': email,
+              'phone': phone,
+              'CNIC': CNIC,
+              'Adddress': address,
+              'Blood Group': setvalue,
+              'Profession': "",
+              'Age': "",
+              'Gender': "",
+              "uid": FirebaseAuth.instance.currentUser.uid,
+            })
+            .then((value) => print('User Added'))
+            .catchError((error) => print('Falied to add user: $error'));
 
         Navigator.pushReplacement(
           context,
@@ -144,8 +148,9 @@ class _RegisterPageState extends State<RegisterPage> {
       ),
       body: ClipRRect(
         borderRadius: new BorderRadius.only(
-            topLeft: const Radius.circular(40.0),
-            topRight: const Radius.circular(40.0)),
+          topLeft: const Radius.circular(40.0),
+          topRight: const Radius.circular(40.0),
+        ),
         child: Container(
           height: 800.0,
           width: double.infinity,
