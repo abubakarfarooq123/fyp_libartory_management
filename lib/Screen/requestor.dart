@@ -1,17 +1,23 @@
+import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:libartory_management/Screen/Drecord.dart';
-import 'package:libartory_management/Screen/newsfeed.dart';
+import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import 'Address.dart';
+import 'Donorss.dart';
+import 'bloodBank.dart';
 import 'drawer.dart';
+import 'requestBlood.dart';
 
-class BloodHub extends StatefulWidget {
+class RequestorPage extends StatefulWidget {
+  const RequestorPage({Key? key}) : super(key: key);
+
   @override
-  _BloodHubState createState() => _BloodHubState();
+  _RequestorPageState createState() => _RequestorPageState();
 }
 
-class _BloodHubState extends State<BloodHub> {
+class _RequestorPageState extends State<RequestorPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +27,7 @@ class _BloodHubState extends State<BloodHub> {
         centerTitle: true,
         backgroundColor: Colors.transparent,
         title: Text(
-          "Donor",
+          "Requestor",
           style: TextStyle(
             fontSize: 45.0,
             fontFamily: "Lato-BoldItalic",
@@ -102,10 +108,10 @@ class _BloodHubState extends State<BloodHub> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => NewsFeed()));
+                                builder: (context) => DonorsPage()));
                       },
                       child: Padding(
-                        padding: EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 10.0),
+                        padding: EdgeInsets.fromLTRB(0.0, 20.0, 0, 10.0),
                         child: Container(
                           height: 100.0,
                           width: 40.0,
@@ -119,7 +125,7 @@ class _BloodHubState extends State<BloodHub> {
                               child: Column(
                                 children: [
                                   Icon(
-                                    Icons.feed,
+                                    FontAwesomeIcons.userFriends,
                                     color: Colors.teal[700],
                                     size: 40.0,
                                   ),
@@ -127,7 +133,7 @@ class _BloodHubState extends State<BloodHub> {
                                     height: 10.0,
                                   ),
                                   Text(
-                                    'News Feed',
+                                    'Donors',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
@@ -143,13 +149,118 @@ class _BloodHubState extends State<BloodHub> {
                       ),
                     ),
                   ),
+                  SizedBox(
+                    width: 10.0,
+                  ),
                   Expanded(
                     child: GestureDetector(
                       onTap: () {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => Donor_Record()));
+                                builder: (context) => BloodBank()));
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(0.0, 20.0, 10.0, 10.0),
+                        child: Container(
+                          height: 100.0,
+                          width: 40.0,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(13),
+                          ),
+                          child: Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: Column(
+                                children: [
+                                  Icon(
+                                    Icons.store,
+                                    color: Colors.teal[700],
+                                    size: 40.0,
+                                  ),
+                                  SizedBox(
+                                    height: 10.0,
+                                  ),
+                                  Text(
+                                    'Blood Bank',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.teal[700],
+                                      fontSize: 15.0,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => RequestBlood()));
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(10.0, 0.0, 0, 10.0),
+                        child: Container(
+                          height: 100.0,
+                          width: 40.0,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(13),
+                          ),
+                          child: Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: Column(
+                                children: [
+                                  Icon(
+                                    Icons.bloodtype,
+                                    color: Colors.teal[700],
+                                    size: 40.0,
+                                  ),
+                                  SizedBox(
+                                    height: 10.0,
+                                  ),
+                                  Text(
+                                    'Request Blood',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.teal[700],
+                                      fontSize: 15.0,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10.0,
+                  ),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => Address()));
                       },
                       child: Padding(
                         padding: EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 10.0),
@@ -166,7 +277,7 @@ class _BloodHubState extends State<BloodHub> {
                               child: Column(
                                 children: [
                                   Icon(
-                                    Icons.description,
+                                    Icons.location_on,
                                     color: Colors.teal[700],
                                     size: 40.0,
                                   ),
@@ -174,7 +285,7 @@ class _BloodHubState extends State<BloodHub> {
                                     height: 10.0,
                                   ),
                                   Text(
-                                    'Donor Record',
+                                    'Address',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,

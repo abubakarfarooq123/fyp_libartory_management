@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:libartory_management/Screen/updateSplash.dart';
 
 class profile extends StatefulWidget {
@@ -14,6 +18,24 @@ class profile extends StatefulWidget {
 }
 
 class _profileState extends State<profile> {
+  File? imageFile;
+  Future getImage(ImageSource source) async {
+    await ImagePicker.pickImage(source: source).then((xFile) {
+      if (xFile != null) {
+        imageFile = File(xFile.path);
+        uploadImage();
+      }
+    });
+  }
+
+  Future uploadImage() async {
+    var ref = FirebaseStorage.instance.ref().child('images');
+
+    var uploadTask = await ref.putFile(imageFile!);
+
+    String imageUrl = await uploadTask.ref.getDownloadURL();
+  }
+
   final _formkey = GlobalKey<FormState>();
   var email = '';
   var name = '';
@@ -24,8 +46,17 @@ class _profileState extends State<profile> {
   var Profession;
   var Age;
   var Gender;
-  Future updateUser(name, email, phone, CNIC, address, setvalue, Profession,
-      Age, Gender) async {
+  Future updateUser(
+    name,
+    email,
+    phone,
+    CNIC,
+    address,
+    setvalue,
+    Profession,
+    Age,
+    Gender,
+  ) async {
     await FirebaseFirestore.instance
         .collection("LabortarySystem")
         .doc(FirebaseAuth.instance.currentUser.uid)
@@ -91,63 +122,61 @@ class _profileState extends State<profile> {
             Age = data['Age'];
             Gender = data['Gender'];
 
-            return Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(40.0),
-                  topRight: Radius.circular(40.0),
+            return Form(
+              key: _formkey,
+              child: Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(40.0),
+                    topRight: Radius.circular(40.0),
+                  ),
                 ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(top: 20.0),
-                    child: new Stack(
-                      fit: StackFit.loose,
-                      children: <Widget>[
-                        new Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            new Container(
-                                width: 140.0,
-                                height: 140.0,
-                                decoration: new BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.black,
-                                  image: new DecorationImage(
-                                    image: new ExactAssetImage(
-                                        'assets/images/fyp-logo.png'),
-                                    fit: BoxFit.cover,
-                                  ),
-                                )),
-                          ],
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 90.0, right: 100.0),
-                          child: new Row(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(top: 20.0),
+                      child: new Stack(
+                        fit: StackFit.loose,
+                        children: <Widget>[
+                          new Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               new CircleAvatar(
-                                backgroundColor: Colors.red,
-                                radius: 25.0,
-                                child: new Icon(
-                                  Icons.camera_alt,
-                                  color: Colors.white,
-                                ),
-                              )
+                                radius: 80.0,
+                              ),
                             ],
                           ),
-                        ),
-                      ],
+                          Padding(
+                            padding: EdgeInsets.only(top: 120.0, right: 100.0),
+                            child: new Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                new CircleAvatar(
+                                  backgroundColor: Colors.teal[700],
+                                  radius: 25.0,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      showModalBottomSheet(
+                                        context: context,
+                                        builder: ((builder) => bottomSheet()),
+                                      );
+                                    },
+                                    child: Icon(
+                                      Icons.camera_alt,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  Form(
-                    key: _formkey,
-                    child: Column(
+                    Column(
                       children: <Widget>[
                         Padding(
                           padding: const EdgeInsets.all(18.0),
@@ -380,12 +409,63 @@ class _profileState extends State<profile> {
                         ),
                       ],
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             );
           },
         ),
+      ),
+    );
+  }
+
+  Widget bottomSheet() {
+    return Container(
+      height: 80.0,
+      width: MediaQuery.of(context).size.width,
+      margin: EdgeInsets.symmetric(
+        horizontal: 20,
+        vertical: 20,
+      ),
+      child: Column(
+        children: <Widget>[
+          Text(
+            "Choose Profile photo",
+            style: TextStyle(
+              fontSize: 20.0,
+            ),
+          ),
+          SizedBox(
+            height: 7.0,
+          ),
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+            FlatButton.icon(
+              icon: Icon(
+                Icons.camera,
+                color: Colors.teal[700],
+                size: 30.0,
+              ),
+              onPressed: () {
+                getImage(ImageSource.camera);
+              },
+              label: Text("Camera"),
+            ),
+            SizedBox(
+              width: 40.0,
+            ),
+            FlatButton.icon(
+              icon: Icon(
+                Icons.image,
+                color: Colors.teal[700],
+                size: 30.0,
+              ),
+              onPressed: () {
+                getImage(ImageSource.gallery);
+              },
+              label: Text("Gallery"),
+            ),
+          ])
+        ],
       ),
     );
   }

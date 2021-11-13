@@ -71,105 +71,113 @@ class _chatState extends State<chat> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: isLoading
-          ? Center(
-              child: Container(
-                height: 20.0,
-                width: 20.0,
-                child: CircularProgressIndicator(),
-              ),
-            )
-          : SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  SafeArea(
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 20, right: 14, top: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(
-                            "Conversations",
-                            style: TextStyle(
-                                fontSize: 32, fontWeight: FontWeight.bold),
-                          ),
-                          FlatButton(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0),
-                            ),
-                            color: Colors.blue,
-                            onPressed: Search,
-                            child: Text(
-                              "Search",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
-                            ),
-                          ),
-                        ],
+      body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            SafeArea(
+              child: Padding(
+                padding: EdgeInsets.only(left: 20, right: 14, top: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "Conversations",
+                      style:
+                          TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                    ),
+                    FlatButton(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                      color: Colors.blue,
+                      onPressed: Search,
+                      child: Text(
+                        "Search",
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 16, left: 16, right: 16),
-                    child: TextField(
-                      controller: search,
-                      decoration: InputDecoration(
-                        hintText: "Search...",
-                        hintStyle: TextStyle(color: Colors.grey.shade600),
-                        prefixIcon: Icon(
-                          Icons.search,
-                          color: Colors.grey.shade600,
-                          size: 20,
-                        ),
-                        filled: true,
-                        fillColor: Colors.grey.shade100,
-                        contentPadding: EdgeInsets.all(8),
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
-                            borderSide:
-                                BorderSide(color: Colors.grey.shade100)),
-                      ),
-                    ),
-                  ),
-                  userMap != null
-                      ? GestureDetector(
-                          child: ListTile(
-                            onTap: () {
-                              String roomId = chatRoomId(
-                                  _auth.currentUser.displayName,
-                                  userMap!['name']);
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => chatroom(
-                                          chatRoomId: roomId,
-                                          userMap: userMap!)));
-                            },
-                            leading: Icon(
-                              Icons.account_box,
-                              color: Colors.black,
-                              size: 50.0,
-                            ),
-                            title: Text(
-                              userMap!['name'],
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 17,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            subtitle: Text(userMap!['email']),
-                            trailing: Icon(Icons.chat, color: Colors.black),
-                          ),
-                        )
-                      : Container(),
-                ],
+                  ],
+                ),
               ),
             ),
+            Padding(
+              padding: EdgeInsets.only(top: 16, left: 16, right: 16),
+              child: TextField(
+                controller: search,
+                decoration: InputDecoration(
+                  hintText: "Search...",
+                  hintStyle: TextStyle(color: Colors.grey.shade600),
+                  prefixIcon: Icon(
+                    Icons.search,
+                    color: Colors.grey.shade600,
+                    size: 20,
+                  ),
+                  filled: true,
+                  fillColor: Colors.grey.shade100,
+                  contentPadding: EdgeInsets.all(8),
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      borderSide: BorderSide(color: Colors.grey.shade100)),
+                ),
+              ),
+            ),
+            userMap != null
+                ? GestureDetector(
+                    child: ListTile(
+                      onTap: () {
+                        String roomId = chatRoomId(
+                            _auth.currentUser.displayName, userMap!['name']);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => chatroom(
+                                    chatRoomId: roomId, userMap: userMap!)));
+                      },
+                      leading: Icon(
+                        Icons.account_box,
+                        color: Colors.black,
+                        size: 50.0,
+                      ),
+                      title: Text(
+                        userMap!['name'],
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 17,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      subtitle: Text(userMap!['email']),
+                      trailing: Icon(Icons.chat, color: Colors.black),
+                    ),
+                  )
+                : Container(),
+            /*GestureDetector(
+              child: ListTile(
+                leading: Icon(
+                  Icons.account_box,
+                  color: Colors.black,
+                  size: 50.0,
+                ),
+                title: Text(
+                  userMap!['name'],
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 17,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                subtitle: Text(userMap!['email']),
+                trailing: Icon(Icons.chat, color: Colors.black),
+              ),
+            )*/
+          ],
+        ),
+      ),
     );
   }
 }
