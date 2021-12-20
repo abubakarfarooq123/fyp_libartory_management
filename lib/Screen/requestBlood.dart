@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:libartory_management/Screen/newsfeedloading.dart';
 
 import 'drawer.dart';
 
@@ -227,11 +228,7 @@ class _RequestBloodState extends State<RequestBlood> {
                                   maxLines: 3,
                                   maxLength: 1000,
                                   autofocus: false,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      description = value;
-                                    });
-                                  },
+                                  onChanged: (value) => {},
                                   decoration: InputDecoration(
                                     hintText: "Description",
                                     icon: Icon(
@@ -261,12 +258,19 @@ class _RequestBloodState extends State<RequestBlood> {
                                     // addUser();
                                   });
                                   submit();
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              NewsFeedwaiting()));
                                 }
                               },
                               textColor: Colors.white,
                               padding: EdgeInsets.only(left: 5.0, right: 5.0),
                               color: Colors.teal[700],
-                              child: Text("Submit"),
+                              child: Text(
+                                "Submit",
+                              ),
                               shape: new RoundedRectangleBorder(
                                   borderRadius:
                                       new BorderRadius.circular(30.0)),

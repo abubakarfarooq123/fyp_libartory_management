@@ -19,7 +19,6 @@ class _Donor_RecordState extends State<Donor_Record> {
   var CNIC = '';
   var setvalue = '';
   var phone = '';
-  var Age = '';
   var description = '';
   final descriptionController = TextEditingController();
 
@@ -49,7 +48,7 @@ class _Donor_RecordState extends State<Donor_Record> {
           'phone': phone,
           'CNIC': CNIC,
           'Blood Group': setvalue,
-          'Age': Age,
+          'Age': age,
           'description': description,
         })
         .then((value) => print('User Added'))
@@ -84,17 +83,12 @@ class _Donor_RecordState extends State<Donor_Record> {
             if (snapshot.hasError) {
               print('somthing went wrong');
             }
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
             var data = snapshot.data;
             name = data!['name'];
             phone = data['phone'];
             CNIC = data['CNIC'];
             setvalue = data['Blood Group'];
-            Age = data['Age'];
+            age = data['Age'];
 
             return Scaffold(
               backgroundColor: Colors.teal[700],
@@ -145,7 +139,7 @@ class _Donor_RecordState extends State<Donor_Record> {
                               Padding(
                                 padding: const EdgeInsets.all(18.0),
                                 child: TextFormField(
-                                  initialValue: Age,
+                                  initialValue: age,
                                   autofocus: false,
                                   decoration: InputDecoration(
                                     hintText: 'Age',
@@ -215,6 +209,7 @@ class _Donor_RecordState extends State<Donor_Record> {
                                       });
                                     },
                                     decoration: InputDecoration(
+                                      labelText: description,
                                       icon: Icon(
                                         Icons.description,
                                         color: Colors.teal[700],

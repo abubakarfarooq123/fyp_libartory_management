@@ -377,6 +377,9 @@ class _profileState extends State<profile> {
                             ),
                           ),
                         ),
+                        SizedBox(
+                          height: 20.0,
+                        ),
                         Center(
                           child: Container(
                             height: 40.0,
@@ -406,6 +409,9 @@ class _profileState extends State<profile> {
                               ),
                             ),
                           ),
+                        ),
+                        SizedBox(
+                          height: 20.0,
                         ),
                       ],
                     ),

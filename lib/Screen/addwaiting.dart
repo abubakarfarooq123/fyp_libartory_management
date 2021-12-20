@@ -1,23 +1,25 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:libartory_management/Screen/Drecord.dart';
 import 'package:libartory_management/Screen/bloodhub.dart';
+import 'package:libartory_management/Screen/home.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:libartory_management/Screen/newsfeed.dart';
+import 'package:libartory_management/login.dart';
 
-class NewsFeedwaiting extends StatefulWidget {
-  const NewsFeedwaiting({Key? key}) : super(key: key);
+class addwaiting extends StatefulWidget {
+  const addwaiting({Key? key}) : super(key: key);
 
   @override
-  _NewsFeedwaitingState createState() => _NewsFeedwaitingState();
+  _addwaitingState createState() => _addwaitingState();
 }
 
-class _NewsFeedwaitingState extends State<NewsFeedwaiting> {
+class _addwaitingState extends State<addwaiting> {
   @override
   void initState() {
     super.initState();
     Timer(Duration(seconds: 3), () {
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => NewsFeed()));
+          context, MaterialPageRoute(builder: (context) => BloodHub()));
     });
   }
 
@@ -29,12 +31,12 @@ class _NewsFeedwaitingState extends State<NewsFeedwaiting> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SpinKitFadingFour(
+            SpinKitDoubleBounce(
               color: Colors.teal[700],
               size: 100.0,
             ),
             Text(
-              'Sending to News Feed',
+              'Adding Data',
               style: TextStyle(
                 color: Colors.teal[700],
                 fontSize: 20.0,

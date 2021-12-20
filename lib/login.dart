@@ -1,8 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:libartory_management/Screen/splashloading.dart';
 import 'package:libartory_management/forgot.dart';
-import 'Screen/home.dart';
-
 import 'package:libartory_management/registerPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -164,6 +162,7 @@ class _LoginState extends State<Login> {
                                 child: Container(
                                   height: 40.0,
                                   width: 340.0,
+                                  // ignore: deprecated_member_use
                                   child: RaisedButton(
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(30.0),

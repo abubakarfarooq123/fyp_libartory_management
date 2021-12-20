@@ -64,7 +64,7 @@ class _RegisterPageState extends State<RegisterPage> {
         user.updateProfile(displayName: name);
         await FirebaseFirestore.instance
             .collection('LabortarySystem')
-            .doc(FirebaseAuth.instance.currentUser.uid)
+            .doc()
             .set({
               'name': name,
               'email': email,

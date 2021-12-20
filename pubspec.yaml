@@ -41,6 +41,7 @@ dependencies:
   path: any
   permission_handler: any
   lite_rolling_switch: ^0.1.1
+  provider: ^6.0.1
 
 
 
