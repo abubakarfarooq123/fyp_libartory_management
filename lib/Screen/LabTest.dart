@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:libartory_management/Screen/LabTestDetail.dart';
 import 'drawer.dart';
 
 class LabTestPage extends StatefulWidget {
@@ -27,9 +28,16 @@ class _LabTestPageState extends State<LabTestPage> {
                       ),
                       margin: EdgeInsets.all(20.0),
                       child: Container(
-                        height: 100,
+                        height: 60,
                         child: FlatButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => LabTestDetail(
+                                          dc: dc,
+                                        )));
+                          },
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
