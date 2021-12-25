@@ -1,4 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:libartory_management/Screen/Drecord.dart';
@@ -12,8 +14,34 @@ class BloodHub extends StatefulWidget {
 }
 
 class _BloodHubState extends State<BloodHub> {
+  var value;
+  getLabortararyData() async {
+    value = await FirebaseFirestore.instance
+        .collection('LabortarySystem')
+        .doc(FirebaseAuth.instance.currentUser.uid)
+        .get();
+    if (value.exists) {
+      return print('Success');
+    }
+  }
+
+  var donorValue;
+  getDonorData() async {
+    donorValue = await FirebaseFirestore.instance
+        .collection('DonorRecord')
+        .doc(FirebaseAuth.instance.currentUser.uid)
+        .get();
+    if (donorValue.exists) {
+      return print('Success Donor Record');
+    } else {
+      donorValue = "No Data";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    getLabortararyData();
+    getDonorData();
     return Scaffold(
       backgroundColor: Colors.teal[700],
       appBar: AppBar(
@@ -149,7 +177,10 @@ class _BloodHubState extends State<BloodHub> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => Donor_Record()));
+                                builder: (context) => Donor_Record(
+                                      value: value,
+                                      donorValue: donorValue,
+                                    )));
                       },
                       child: Padding(
                         padding: EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 10.0),

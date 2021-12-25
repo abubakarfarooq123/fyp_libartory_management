@@ -9,6 +9,8 @@ import 'home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class MyDrawer extends StatelessWidget {
+  // DocumentSnapshot dc;
+  // MyDrawer({this.dc});
   var email = '';
   var name = '';
   @override
