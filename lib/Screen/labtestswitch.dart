@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:libartory_management/Screen/LabTest.dart';
-import 'package:libartory_management/Screen/newsfeed.dart';
 
 class LabTestwaiting extends StatefulWidget {
   const LabTestwaiting({Key? key}) : super(key: key);
@@ -37,7 +36,7 @@ class _LabTestwaitingState extends State<LabTestwaiting> {
               height: 20,
             ),
             Text(
-              'Booking Test',
+              'Adding to Card',
               style: TextStyle(
                 color: Colors.teal[700],
                 fontSize: 20.0,

@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:libartory_management/Screen/LabTest.dart';
 import 'package:libartory_management/Screen/drawer.dart';
 import 'package:libartory_management/Screen/labtestswitch.dart';
 
@@ -17,8 +16,9 @@ class _LabTestDetailState extends State<LabTestDetail> {
   book() async {
     await FirebaseFirestore.instance
         .collection('Booking')
-        .doc()
-        .set({
+        .doc(FirebaseAuth.instance.currentUser.uid)
+        .collection("MyTest")
+        .add({
           'Name': widget.dc.get('Name'),
           'Sample Required': widget.dc.get('Sample'),
           'Result Time': widget.dc.get('Result Time'),
@@ -167,7 +167,7 @@ class _LabTestDetailState extends State<LabTestDetail> {
                     ),
                   ),
                   SizedBox(
-                    width: 85,
+                    width: 78,
                   ),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
@@ -181,7 +181,7 @@ class _LabTestDetailState extends State<LabTestDetail> {
                 ],
               ),
               SizedBox(
-                height: 60,
+                height: 200,
               ),
               Container(
                 height: 40.0,
@@ -201,7 +201,7 @@ class _LabTestDetailState extends State<LabTestDetail> {
                     });
                   },
                   child: Text(
-                    'Book Test',
+                    'Add to Cart',
                     style: TextStyle(
                       fontSize: 18.0,
                       color: Colors.white,

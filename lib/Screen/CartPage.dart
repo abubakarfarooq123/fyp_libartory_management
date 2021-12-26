@@ -1,18 +1,24 @@
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:libartory_management/Screen/CartPage.dart';
-import 'package:libartory_management/Screen/LabTestDetail.dart';
-import 'drawer.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:libartory_management/Screen/checkoutpage.dart';
+import 'package:libartory_management/Screen/drawer.dart';
 
-class LabTestPage extends StatefulWidget {
+class Cart extends StatefulWidget {
+  const Cart({Key? key}) : super(key: key);
+
   @override
-  _LabTestPageState createState() => _LabTestPageState();
+  _CartState createState() => _CartState();
 }
 
-class _LabTestPageState extends State<LabTestPage> {
+class _CartState extends State<Cart> {
   Widget list() {
     return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance.collection("AddLabTest").snapshots(),
+      stream: FirebaseFirestore.instance
+          .collection("Booking")
+          .doc(FirebaseAuth.instance.currentUser.uid)
+          .collection("MyTest")
+          .snapshots(),
       builder: (context, snapshot) {
         return snapshot.hasData
             ? ListView.builder(
@@ -35,7 +41,7 @@ class _LabTestPageState extends State<LabTestPage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => LabTestDetail(
+                                    builder: (context) => Checkout(
                                           dc: dc,
                                         )));
                           },
@@ -71,24 +77,13 @@ class _LabTestPageState extends State<LabTestPage> {
         centerTitle: true,
         backgroundColor: Colors.transparent,
         title: Text(
-          "Lab Test",
+          "Cart",
           style: TextStyle(
             fontSize: 40.0,
             fontFamily: "Lato-BoldItalic",
             color: Colors.white,
           ),
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.shopping_cart),
-            onPressed: () {
-              setState(() {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => Cart()));
-              });
-            },
-          ),
-        ],
       ),
       drawer: MyDrawer(),
       body: SingleChildScrollView(

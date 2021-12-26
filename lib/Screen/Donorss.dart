@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'drawer.dart';
@@ -18,8 +19,40 @@ class _DonorsPageState extends State<DonorsPage> {
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) {
                   DocumentSnapshot dc = snapshot.data!.docs[index];
-                  return ListTile(
-                    title: Text(dc['Age']),
+                  return SingleChildScrollView(
+                    child: Container(
+                      height: 200,
+                      width: 100,
+                      child: Card(
+                        color: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(color: Colors.white70, width: 1),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        margin: EdgeInsets.all(20.0),
+                        child: Container(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text(
+                                dc['name'],
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.teal[700],
+                                ),
+                              ),
+                              Text(
+                                dc['Age'],
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.teal[700],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                   );
                 },
               )
