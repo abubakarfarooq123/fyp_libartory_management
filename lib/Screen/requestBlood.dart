@@ -37,7 +37,7 @@ class _RequestBloodState extends State<RequestBlood> {
 
   submit() async {
     await FirebaseFirestore.instance
-        .collection('BloodRequets')
+        .collection('BloodRequest')
         .doc(FirebaseAuth.instance.currentUser.uid)
         .set({
           'phone': phone,
@@ -155,9 +155,9 @@ class _RequestBloodState extends State<RequestBlood> {
                                   18.0, 0, 18.0, 18.0),
                               child: TextFormField(
                                   decoration: InputDecoration(
-                                    hintText: 'Quantity(ML)',
+                                    hintText: 'Bottles Required',
                                     icon: Icon(
-                                      FontAwesomeIcons.prescriptionBottle,
+                                      FontAwesomeIcons.prescriptionBottleAlt,
                                       color: Colors.teal[700],
                                     ),
                                   ),
@@ -165,7 +165,7 @@ class _RequestBloodState extends State<RequestBlood> {
                                   controller: quantityController,
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return 'Please Enter Quantity';
+                                      return 'Please Enter bottle Required';
                                     }
                                     return null;
                                   }),

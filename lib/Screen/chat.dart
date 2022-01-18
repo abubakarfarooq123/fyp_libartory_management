@@ -24,7 +24,7 @@ class _chatState extends State<chat> with WidgetsBindingObserver {
   void setStatus(String status) async {
     await _firestore
         .collection('LabortarySystem')
-        .doc(_auth.currentUser!.uid)
+        .doc(_auth.currentUser.uid)
         .update({
       "status": status,
     });
@@ -132,6 +132,7 @@ class _chatState extends State<chat> with WidgetsBindingObserver {
                       onTap: () {
                         String roomId = chatRoomId(
                             _auth.currentUser.displayName, userMap!['name']);
+
                         Navigator.push(
                             context,
                             MaterialPageRoute(

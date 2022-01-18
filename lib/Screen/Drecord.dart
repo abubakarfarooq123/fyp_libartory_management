@@ -158,7 +158,6 @@ class _Donor_RecordState extends State<Donor_Record> {
                               });
                             },
                             decoration: InputDecoration(
-                              labelText: description,
                               icon: Icon(
                                 Icons.description,
                                 color: Colors.teal[700],

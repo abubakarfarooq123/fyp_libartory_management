@@ -7,7 +7,8 @@ import 'package:libartory_management/Screen/addwaiting.dart';
 import 'package:libartory_management/Screen/drawer.dart';
 
 class AddLabTest extends StatefulWidget {
-  const AddLabTest({Key? key}) : super(key: key);
+  var dc;
+  AddLabTest({this.dc});
 
   @override
   _AddLabTestState createState() => _AddLabTestState();
@@ -231,6 +232,8 @@ class _AddLabTestState extends State<AddLabTest> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => addwaiting()));
+
+                              (route) => false;
                             }
                           },
                           child: Text(

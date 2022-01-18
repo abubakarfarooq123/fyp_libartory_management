@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:libartory_management/Screen/ChatRoom.dart';
+import 'package:libartory_management/Screen/chat.dart';
 import 'drawer.dart';
 
 class DonorsPage extends StatefulWidget {
@@ -21,7 +23,7 @@ class _DonorsPageState extends State<DonorsPage> {
                   DocumentSnapshot dc = snapshot.data!.docs[index];
                   return SingleChildScrollView(
                     child: Container(
-                      height: 200,
+                      height: 300,
                       width: 100,
                       child: Card(
                         color: Colors.white,
@@ -30,25 +32,95 @@ class _DonorsPageState extends State<DonorsPage> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         margin: EdgeInsets.all(20.0),
-                        child: Container(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(
-                                dc['name'],
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.teal[700],
-                                ),
+                        child: SingleChildScrollView(
+                          child: Container(
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.fromLTRB(20, 10, 10, 10),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.fromLTRB(200, 0, 0, 0),
+                                    child: CircleAvatar(
+                                      radius: 20,
+                                      backgroundColor: Colors.teal[700],
+                                      child: Text(
+                                        dc['Blood Group'],
+                                        style: TextStyle(
+                                          fontSize: 15.0,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    dc['name'],
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                    dc['phone'],
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                    dc['description'],
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                  Stack(
+                                    fit: StackFit.loose,
+                                    children: <Widget>[
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                            top: 15.0, left: 220),
+                                        child: new Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            new CircleAvatar(
+                                              backgroundColor: Colors.teal[700],
+                                              radius: 20.0,
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  Navigator.pushReplacement(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              chatroom(
+                                                                userMap: {},
+                                                                chatRoomId: '',
+                                                              )));
+
+                                                  (route) => false;
+                                                },
+                                                child: Icon(
+                                                  Icons.message,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
-                              Text(
-                                dc['Age'],
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.teal[700],
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
                         ),
                       ),

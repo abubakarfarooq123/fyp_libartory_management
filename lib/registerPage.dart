@@ -3,8 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:libartory_management/Screen/Address.dart';
-import 'package:libartory_management/Screen/home.dart';
 import 'package:libartory_management/Screen/registerSplash.dart';
 import 'login.dart';
 
@@ -64,7 +62,7 @@ class _RegisterPageState extends State<RegisterPage> {
         user.updateProfile(displayName: name);
         await FirebaseFirestore.instance
             .collection('LabortarySystem')
-            .doc()
+            .doc(FirebaseAuth.instance.currentUser.uid)
             .set({
               'name': name,
               'email': email,
@@ -75,6 +73,8 @@ class _RegisterPageState extends State<RegisterPage> {
               'Profession': "",
               'Age': "",
               'Gender': "",
+              'status': "unavailable",
+              "Image": '',
               "uid": FirebaseAuth.instance.currentUser.uid,
             })
             .then((value) => print('User Added'))

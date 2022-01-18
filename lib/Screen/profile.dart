@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -7,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:libartory_management/Screen/updateSplash.dart';
+import 'dart:io';
 
 class profile extends StatefulWidget {
   profile({
@@ -19,21 +18,32 @@ class profile extends StatefulWidget {
 
 class _profileState extends State<profile> {
   File? imageFile;
+  var downloadURL;
   Future getImage(ImageSource source) async {
     await ImagePicker.pickImage(source: source).then((xFile) {
       if (xFile != null) {
-        imageFile = File(xFile.path);
+        setState(() {
+          imageFile = File(xFile.path);
+        });
         uploadImage();
       }
+      Navigator.of(context).pop();
     });
   }
 
   Future uploadImage() async {
-    var ref = FirebaseStorage.instance.ref().child('images');
+    Reference firebaseStorageRef =
+        FirebaseStorage.instance.ref().child("UserImages");
+    final UploadTask task = firebaseStorageRef.putFile(imageFile);
 
-    var uploadTask = await ref.putFile(imageFile!);
-
-    String imageUrl = await uploadTask.ref.getDownloadURL();
+    task.whenComplete(() async {
+      try {
+        downloadURL = await firebaseStorageRef.getDownloadURL();
+        print("this is url $downloadURL");
+      } catch (onError) {
+        print("Error");
+      }
+    });
   }
 
   final _formkey = GlobalKey<FormState>();
@@ -46,6 +56,7 @@ class _profileState extends State<profile> {
   var Profession;
   var Age;
   var Gender;
+  String image = '';
   Future updateUser(
     name,
     email,
@@ -70,6 +81,7 @@ class _profileState extends State<profile> {
       'Profession': Profession,
       'Age': Age,
       'Gender': Gender,
+      'Image': downloadURL ?? ''
     });
   }
 
@@ -121,6 +133,7 @@ class _profileState extends State<profile> {
             Profession = data['Profession'];
             Age = data['Age'];
             Gender = data['Gender'];
+            image = data['Image'];
 
             return Form(
               key: _formkey,
@@ -144,32 +157,42 @@ class _profileState extends State<profile> {
                           new Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              new CircleAvatar(
-                                radius: 80.0,
-                              ),
+                              imageFile != null
+                                  ? CircleAvatar(
+                                      radius: 80.0,
+                                      backgroundImage: FileImage(imageFile!),
+                                    )
+                                  : image != ''
+                                      ? CircleAvatar(
+                                          radius: 80.0,
+                                          backgroundImage: NetworkImage(image),
+                                        )
+                                      : CircleAvatar(
+                                          radius: 80.0,
+                                          backgroundColor: Colors.black,
+                                          backgroundImage: AssetImage(
+                                              'assets/images/profile.png'),
+                                        ),
                             ],
                           ),
                           Padding(
-                            padding: EdgeInsets.only(top: 120.0, right: 100.0),
+                            padding: EdgeInsets.only(top: 120.0, left: 90.0),
                             child: new Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                new CircleAvatar(
-                                  backgroundColor: Colors.teal[700],
-                                  radius: 25.0,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      showModalBottomSheet(
-                                        context: context,
-                                        builder: ((builder) => bottomSheet()),
-                                      );
-                                    },
-                                    child: Icon(
-                                      Icons.camera_alt,
-                                      color: Colors.white,
-                                    ),
+                                new GestureDetector(
+                                  onTap: () {
+                                    showModalBottomSheet(
+                                      context: context,
+                                      builder: ((builder) => bottomSheet()),
+                                    );
+                                  },
+                                  child: Icon(
+                                    Icons.camera_alt,
+                                    color: Colors.teal[700],
+                                    size: 35.0,
                                   ),
-                                )
+                                ),
                               ],
                             ),
                           ),
@@ -397,6 +420,8 @@ class _profileState extends State<profile> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => updatesplash()));
+
+                                (route) => false;
                               },
                               color: Colors.teal[700],
                               child: Text(
